@@ -1,0 +1,70 @@
+﻿using Ratelite;
+using Ratelite.Resources;
+using Ratelite.Sounds;
+using Ratelite.UI;
+using Ratelite.UI.Widgets;
+
+namespace Hokajit.Scenes;
+
+public class Splash : Scene
+{
+	private Canvas canvas = null!;
+	private Image image = null!;
+	
+	private AudioSource audioSource = null!;
+	private bool firstLaunch;
+	
+	public override void Init()
+	{
+		R.game.windowColor = new Color(0x212830);
+		R.game.backgroundColor = new Color(0x151B23);
+		
+		Cursor.SetTexture(0);
+		canvas = AddPlugin<Canvas>();
+	}
+	
+	public override async Task Load()
+	{
+		audioSource = new AudioSource
+		{
+			audio = await Vault.LoadAsyncResource<AudioClip>("sounds/purrvert.wav"),
+			volume = 0.15F
+		};
+	}
+	
+	public override void Start()
+	{
+		canvas.root.AddChild(
+			image = new Image(Vault.GetAsset<Texture2D>("purrvert")!)
+			{
+				pivotAndAnchors = new Vector2(0.5F),
+				scale = new Vector2(6),
+				opacity = 0
+			}
+		);
+	}
+	
+	public override void Update()
+	{
+		if (image.opacity < 1)
+			image.opacity += Time.delta * 0.5F;
+		else
+		{
+			if (audioSource.offset < 0.5F)
+			{
+				image.position = new Vector2(Random.Shared.Next(-5, 5), Random.Shared.Next(-5, 5));
+				image.scale += Vector2.one * Time.delta;
+			}
+			
+			if (!firstLaunch)
+			{
+				firstLaunch = true;
+				audioSource.Play();
+			}
+			else if (!audioSource.isPlaying)
+			{
+				Stage.Load(new Menu());
+			}
+		}
+	}
+}
