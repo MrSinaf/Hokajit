@@ -8,6 +8,8 @@ namespace Hokajit.Scenes;
 public class Menu : Scene
 {
 	private Canvas canvas = null!;
+	private Layout mainButtons = null!;
+	private Layout modeButtons = null!;
 	
 	public override void Init()
 	{
@@ -19,10 +21,12 @@ public class Menu : Scene
 		var ui = Vault.GetAsset<Texture2D>("ui")!;
 		
 		canvas.root.padding = new Region(20);
-		canvas.root.AddChild(new Label("Développé par MrSinaf | PurrVert")
-		{
-			pivotAndAnchors = new Vector2(0.5F, 0),
-		});
+		canvas.root.AddChild(
+			new Label("Développé par MrSinaf | PurrVert")
+			{
+				pivotAndAnchors = new Vector2(0.5F, 0),
+			}
+		);
 		canvas.root.AddChild(
 			new Image(ui)
 			{
@@ -35,7 +39,7 @@ public class Menu : Scene
 			}
 		);
 		
-		var layout = new Layout
+		mainButtons = new Layout
 		{
 			orientation = Orientation.Horizontal,
 			anchors = new Vector2(0.5F),
@@ -43,19 +47,55 @@ public class Menu : Scene
 			position = new Vector2(0, -5),
 			spacing = 10
 		};
-		layout.AddChild(new Button("Jouer", () => { }));
-		layout.AddChild(new Button("Options", () => { }));
-		layout.AddChild(new Button("Quitter", () => R.game.window.Close()));
-		canvas.root.AddChild(layout);
-	}
-	
-	public override void Update()
-	{
+		mainButtons.AddChild(
+			new Button(
+				"Jouer",
+				() =>
+				{
+					mainButtons.active = false;
+					modeButtons.active = true;
+				}
+			)
+		);
+		mainButtons.AddChild(
+			new Button(
+				"Options",
+				() =>
+				{ 
+					// Ignore pour le moment... ¬_¬
+				}
+			)
+		);
+		mainButtons.AddChild(new Button("Quitter", () => R.game.window.Close()));
+		canvas.root.AddChild(mainButtons);
 		
-	}
-	
-	public override void Render()
-	{
-		
+		modeButtons = new Layout
+		{
+			pivot = new Vector2(0.5F, 1),
+			anchorMin = new Vector2(0.5F, 0.5F),
+			position = new Vector2(0, -42),
+			active = false,
+			alignment = 0.5F,
+			spacing = 100
+		};
+		canvas.root.AddChild(modeButtons);
+		var buttons = new Layout
+		{
+			orientation = Orientation.Horizontal,
+			spacing = 200
+		};
+		modeButtons.AddChild(buttons);
+		buttons.AddChild(new Button("JDR", () => { }, "big"));
+		buttons.AddChild(new Button("RTS", () => { }, "big"));
+		modeButtons.AddChild(
+			new Button(
+				"Retour",
+				() =>
+				{
+					modeButtons.active = false;
+					mainButtons.active = true;
+				}
+			)
+		);
 	}
 }

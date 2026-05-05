@@ -32,7 +32,21 @@ R.CreateGame("Hokajit")
 		 );
 		 progress.Report(0.25F);
 		 
+		 await Vault.LoadAsyncResource<BitmapFont>(
+			 "fonts/ari-w9500--display.ttf",
+			 "big.font",
+			 new BitmapFont.Config(new Vector2Int(512), 64)
+		 );
+		 
+		 await Vault.LoadAsyncResource<BitmapFont>(
+			 "fonts/ari-w9500--bold.ttf",
+			 "normal.font",
+			 new BitmapFont.Config(new Vector2Int(512), 18)
+		 );
 		 UIPrefab.Add<Button>(string.Empty, ButtonPrefab);
+		 UIPrefab.Add<Button>("big", ButtonBigPrefab);
+		 UIPrefab.Add<Label>(string.Empty, LabelPrefrab);
+		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 progress.Report(0.5F);
 		 
 		 await Vault.LoadAsyncResource<Texture2D>("textures/purrvert.png", "purrvert");
@@ -41,6 +55,33 @@ R.CreateGame("Hokajit")
 	 }
  )
  .Run();
+
+void LabelBigPrefab(Label e)
+{
+	var font = Vault.GetAsset<BitmapFont>("big.font")!;
+	e.font = font.data;
+	e.material = font.material;
+}
+
+void LabelPrefrab(Label e)
+{
+	var font = Vault.GetAsset<BitmapFont>("normal.font")!;
+	e.font = font.data;
+	e.material = font.material;
+}
+
+void ButtonBigPrefab(Button e)
+{
+	e.size = new Vector2(150, 64);
+	
+	UIPrefab.Apply("big", e.label);
+	e.label.transform = Transform.Upper;
+	e.label.pivotAndAnchors = new Vector2(0.5F);
+	e.label.position = new Vector2(0, -10);
+	
+	e.cursorEnter += OnMouseEnterButton;
+	e.cursorExit += OnMouseExitButton;
+}
 
 void ButtonPrefab(Button e)
 {
@@ -54,8 +95,8 @@ void ButtonPrefab(Button e)
 	e.label.transform = Transform.Upper;
 	e.label.pivotAndAnchors = new Vector2(0.5F);
 	
-	e.cursorEnter += OnMouseEnter;
-	e.cursorExit += OnMouseExit;
+	e.cursorEnter += OnMouseEnterButton;
+	e.cursorExit += OnMouseExitButton;
 	e.onPressed += OnMousePressed;
 	e.onReleased += OnMouseReleased;
 	
@@ -75,6 +116,7 @@ void ButtonPrefab(Button e)
 		Cursor.SetTexture(e.isCursorOver ? 1 : 0);
 	}
 	
-	void OnMouseEnter(UIElement _) => Cursor.SetTexture(1);
-	void OnMouseExit(UIElement _) => Cursor.SetTexture(0);
 }
+
+void OnMouseEnterButton(UIElement _) => Cursor.SetTexture(1);
+void OnMouseExitButton(UIElement _) => Cursor.SetTexture(0);
