@@ -27,7 +27,7 @@ public class Splash : Scene
 	{
 		audioSource = new AudioSource
 		{
-			audio = await Vault.LoadAsyncResource<AudioClip>("sounds/purrvert.wav"),
+			audio = await Vault.LoadResourceAsync<AudioClip>("sounds/purrvert.wav"),
 			volume = 0.15F
 		};
 	}

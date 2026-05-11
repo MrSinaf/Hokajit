@@ -26,6 +26,7 @@
         <None Update="assets\**\*" CopyToOutputDirectory="Always"/>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\..\Ratelite\Ratelite.Animations\Ratelite.Animations.csproj" />
       <ProjectReference Include="..\..\Ratelite\Ratelite.Core\Ratelite.Core.csproj" />
       <ProjectReference Include="..\..\Ratelite\Ratelite.GO\Ratelite.GO.csproj" />
       <ProjectReference Include="..\..\Ratelite\Ratelite.Native\Ratelite.Native.csproj" />

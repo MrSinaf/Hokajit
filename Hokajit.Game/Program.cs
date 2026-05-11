@@ -1,6 +1,9 @@
-﻿using Hokajit.Scenes;
+﻿#if DEBUG
+global using Ratelite.Debugs;
+#endif
+
+using Hokajit.Scenes;
 using Ratelite;
-using Ratelite.Debugs;
 using Ratelite.Resources;
 using Ratelite.Sounds;
 using Ratelite.UI;
@@ -18,27 +21,26 @@ R.CreateGame("Hokajit")
  .LoadingAssets(async progress =>
 	 {
 		 Cursor.AddTexture(
-			 (await Vault.LoadAsyncResource<Texture2D>("textures/cursors/default.png"))!
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/default.png"))!
 			 .AsRawImage()
 		 );
 		 Cursor.AddTexture(
-			 (await Vault.LoadAsyncResource<Texture2D>("textures/cursors/pointer.png"))!
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/pointer.png"))!
 			 .AsRawImage()
 		 );
 		 Cursor.AddTexture(
-			 (await Vault.LoadAsyncResource<Texture2D>("textures/cursors/click.png"))!
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/click.png"))!
 			 .AsRawImage(),
 			 new Vector2Int(0, -2)
 		 );
 		 progress.Report(0.25F);
-		 
-		 await Vault.LoadAsyncResource<BitmapFont>(
+		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--display.ttf",
 			 "big.font",
 			 new BitmapFont.Config(new Vector2Int(512), 64)
 		 );
 		 
-		 await Vault.LoadAsyncResource<BitmapFont>(
+		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--bold.ttf",
 			 "normal.font",
 			 new BitmapFont.Config(new Vector2Int(512), 18)
@@ -49,8 +51,8 @@ R.CreateGame("Hokajit")
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 progress.Report(0.5F);
 		 
-		 await Vault.LoadAsyncResource<Texture2D>("textures/purrvert.png", "purrvert");
-		 await Vault.LoadAsyncResource<Texture2D>("textures/ui.png", "ui");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 progress.Report(1);
 	 }
  )
