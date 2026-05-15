@@ -85,7 +85,11 @@ public class Menu : Scene
 			spacing = 200
 		};
 		modeButtons.AddChild(buttons);
-		buttons.AddChild(new Button("JDR", () => { }, "big"));
+		buttons.AddChild(new Button("JDR", () =>
+		{
+			Stage.Load(new RolePlay());
+			Cursor.SetTexture(0);
+		}, "big"));
 		buttons.AddChild(new Button("RTS", () => { }, "big"));
 		modeButtons.AddChild(
 			new Button(

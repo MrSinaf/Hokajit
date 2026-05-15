@@ -4,6 +4,7 @@ global using Ratelite.Debugs;
 
 using Hokajit.Scenes;
 using Ratelite;
+using Ratelite.GO;
 using Ratelite.Resources;
 using Ratelite.Sounds;
 using Ratelite.UI;
@@ -13,6 +14,7 @@ using Ratelite.UI.Widgets;
 R.CreateGame("Hokajit")
  .SetIcon("assets/icon.png")
  .AddModule<SoundModule>()
+ .AddModule<GOModule>()
  .AddModule<UIModule>()
 #if DEBUG
  .AddModule<DebugModule>()
@@ -21,19 +23,21 @@ R.CreateGame("Hokajit")
  .LoadingAssets(async progress =>
 	 {
 		 Cursor.AddTexture(
-			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/default.png"))!
-			 .AsRawImage()
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/default.png")).AsRawImage()
 		 );
 		 Cursor.AddTexture(
-			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/pointer.png"))!
-			 .AsRawImage()
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/pointer.png")).AsRawImage()
 		 );
 		 Cursor.AddTexture(
-			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/click.png"))!
-			 .AsRawImage(),
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/click.png")).AsRawImage(),
 			 new Vector2Int(0, -2)
 		 );
+		 Cursor.AddTexture(
+			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/grab.png")).AsRawImage()
+		 );
+		 
 		 progress.Report(0.25F);
+		 var ui = await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--display.ttf",
 			 "big.font",
@@ -45,14 +49,33 @@ R.CreateGame("Hokajit")
 			 "normal.font",
 			 new BitmapFont.Config(new Vector2Int(512), 18)
 		 );
+		 Vault.AddAsset(
+			 "button.mat", new MaterialUI(Vault.GetAsset<Shader>(UIModule.DEFAULT_SHADER))
+						   .SetTexture(ui)
+						   .SetNinePatch(new Region(3, 1, 2, 1), 5)
+		 );
+		 Vault.AddAsset(
+			 "panel.mat", new MaterialUI(Vault.GetAsset<Shader>(UIModule.DEFAULT_SHADER))
+						   .SetTexture(ui)
+						   .SetNinePatch(new Region(3, 3, 1 ,1), 5)
+		 );
 		 UIPrefab.Add<Button>(string.Empty, ButtonPrefab);
 		 UIPrefab.Add<Button>("big", ButtonBigPrefab);
 		 UIPrefab.Add<Label>(string.Empty, LabelPrefrab);
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
+		 UIPrefab.Add<Panel>(string.Empty, PanelPrefab);
 		 progress.Report(0.5F);
 		 
+		 await Vault.LoadResourceAsync<Texture2D>("textures/units/dratug.png", "units/dratug");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/units/mortiferi.png",
+			 "units/mortiferi");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/units/on-tek.png", "units/on-tek");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/units/orq.png", "units/orq");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/units/sarka.png", "units/sarka");
+		 progress.Report(0.75F);
+		 
+		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
 		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 progress.Report(1);
 	 }
  )
@@ -87,10 +110,7 @@ void ButtonBigPrefab(Button e)
 
 void ButtonPrefab(Button e)
 {
-	var ui = Vault.GetAsset<Texture2D>("ui");
-	e.material = Vault.GetAsset<MaterialUI>(UIModule.DEFAULT_MATERIAL)
-					  .SetTexture(ui)
-					  .SetNinePatch(new Region(3, 1, 2, 1), 5);
+	e.material = Vault.GetAsset<MaterialUI>("button.mat");
 	e.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
 	e.size = new Vector2(200, 30);
 	
@@ -106,7 +126,7 @@ void ButtonPrefab(Button e)
 	
 	void OnMousePressed(UIElement e)
 	{
-		e.uv = Vault.GetAsset<Texture2D>("ui").GetUVRegion(new RectInt(8, 1, 6, 5));
+		e.uv = Vault.GetAsset<Texture2D>("ui").GetUVRegion(new RectInt(1, 7, 6, 5));
 		((Button)e).label.position = new Vector2(-5, -1);
 		Cursor.SetTexture(2);
 	}
@@ -117,7 +137,15 @@ void ButtonPrefab(Button e)
 		((Button)e).label.position = new Vector2(0, -1);
 		Cursor.SetTexture(e.isCursorOver ? 1 : 0);
 	}
-	
+}
+
+void PanelPrefab(Panel e)
+{
+	e.material = Vault.GetAsset<MaterialUI>("panel.mat");
+	e.uv = Vault.GetAsset<Texture2D>("ui").GetUVRegion(new RectInt(9, 1, 6));
+	e.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
+	e.size = new Vector2(300);
+	e.padding = new Region(10);
 }
 
 void OnMouseEnterButton(UIElement _) => Cursor.SetTexture(1);
