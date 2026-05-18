@@ -74,13 +74,6 @@ public class RolePlay : Scene
 	
 	private void OnMouseButtonReleased(MouseButton button)
 	{
-#if DEBUG
-		if (ImGui.GetIO().WantCaptureMouse)
-			return;
-#endif
-		if (canvas.hasElementHovered)
-			return;
-		
 		if (button == MouseButton.Right)
 		{
 			Cursor.SetTexture(0);

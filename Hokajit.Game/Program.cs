@@ -10,6 +10,9 @@ using Ratelite.Sounds;
 using Ratelite.UI;
 using Ratelite.UI.Widgets;
 
+#if DEBUG
+RDebug.showMenuBar = false;
+#endif
 
 R.CreateGame("Hokajit")
  .SetIcon("assets/icon.png")
@@ -64,6 +67,7 @@ R.CreateGame("Hokajit")
 		 UIPrefab.Add<Label>(string.Empty, LabelPrefrab);
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 UIPrefab.Add<Panel>(string.Empty, PanelPrefab);
+		 UIPrefab.Add<ElementButton>("icon", ElementButtonIconPrefab);
 		 progress.Report(0.5F);
 		 
 		 await Vault.LoadResourceAsync<Texture2D>("textures/units/dratug.png", "units/dratug");
@@ -137,6 +141,15 @@ void ButtonPrefab(Button e)
 		((Button)e).label.position = new Vector2(0, -1);
 		Cursor.SetTexture(e.isCursorOver ? 1 : 0);
 	}
+}
+
+
+void ElementButtonIconPrefab(ElementButton e)
+{
+	ElementButton.DefaultPrefrab(e);
+	e.size = new Vector2(48);
+	e.cursorEnter += OnMouseEnterButton;
+	e.cursorExit += OnMouseExitButton;
 }
 
 void PanelPrefab(Panel e)
