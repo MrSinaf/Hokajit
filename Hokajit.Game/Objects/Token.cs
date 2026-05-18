@@ -14,4 +14,4 @@ public class Token : RObject
 	}
 }
 
-public record class TokenData(string name, Texture2D texture, Region uv);
+public record class TokenData(string name, Vector2 size, Texture2D texture, Region uv);

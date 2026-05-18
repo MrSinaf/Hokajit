@@ -72,7 +72,7 @@ public class Menu : Scene
 		modeButtons = new Layout
 		{
 			pivot = new Vector2(0.5F, 1),
-			anchorMin = new Vector2(0.5F, 0.5F),
+			anchors = new Vector2(0.5F, 0.5F),
 			position = new Vector2(0, -42),
 			active = false,
 			alignment = 0.5F,

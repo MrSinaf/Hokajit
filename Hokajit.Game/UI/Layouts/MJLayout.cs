@@ -1,4 +1,5 @@
-﻿using Ratelite;
+﻿using Hokajit.Scenes;
+using Ratelite;
 using Ratelite.Animations;
 using Ratelite.Resources;
 using Ratelite.UI;
@@ -9,14 +10,17 @@ namespace Hokajit.UI.Layouts;
 public sealed class MJLayout : UIElement
 {
 	private readonly Panel sidePanel;
+	private readonly Animator<Panel> sidePanelAnimator;
+	
 	public UIElement? selectedContainerPanel;
 	public UIElement? oldContainerPanel;
 	
 	public MJLayout()
 	{
-		isInteractif = false;
+		isInteractive = false;
 		anchorMin = Vector2.zero;
 		anchorMax = Vector2.one;
+		R.game.window.mouseButtonPressed += OnMouseButtonPressed;
 		
 		var buttons = new Layout
 		{
@@ -31,7 +35,7 @@ public sealed class MJLayout : UIElement
 			size = new Vector2(8, 7),
 			uv = ui.GetUVRegion(new RectInt(2, 37, 8, 7)),
 			scale = new Vector2(4),
-		}, () => { }, "icon"));
+		}, () => selectedContainerPanel = ListingCharacters(), "icon"));
 		buttons.AddChild(new ElementButton(new Image(ui)
 		{ // Droits
 			size = new Vector2(8, 7),
@@ -43,10 +47,7 @@ public sealed class MJLayout : UIElement
 			size = new Vector2(7, 7),
 			uv = ui.GetUVRegion(new RectInt(22, 37, 7, 7)),
 			scale = new Vector2(4),
-		}, () =>
-		{
-			selectedContainerPanel = ListingCharacter();
-		}, "icon"));
+		}, () => { }, "icon"));
 		AddChild(buttons);
 		
 		AddChild(sidePanel = new Panel
@@ -57,7 +58,7 @@ public sealed class MJLayout : UIElement
 			anchorMax = new Vector2(0, 1),
 			margin = new Region(0, 45, 0, 45)
 		});
-		var animator = sidePanel.components.AddComponent<Animator<Panel>>();
+		sidePanelAnimator = sidePanel.components.AddComponent<Animator<Panel>>();
 		var controller = new AnimationController<Panel>();
 		var showAnimation = new AnimationTrack<Panel, float>(
 			[
@@ -104,29 +105,31 @@ public sealed class MJLayout : UIElement
 			if (!animator.isRunning)
 				animator.SetBlock("isHide");
 		});
-		animator.SetController(sidePanel, controller);
-		ListingCharacter();
+		sidePanelAnimator.SetController(sidePanel, controller);
 	}
 	
-	public UIElement ListingCharacter()
+	private void OnMouseButtonPressed(MouseButton button)
 	{
-		var layout = new Layout();
-		var dratug = Vault.GetAsset<Texture2D>("units/dratug")!;
-		for (var i = 0; i < 100; i++)
+		if (!RolePlay.m.canvas.hasElementHovered && sidePanelAnimator.block.name == "isShow")
+			sidePanelAnimator.SetBlock("hide");
+	}
+	
+	private UIElement ListingCharacters()
+	{
+		var layout = new Layout
 		{
-			layout.AddChild(new Image(dratug)
-			{
-				captureCursorEvent = false,
-				size = new Vector2(16, 16),
-				scale = new Vector2(5),
-				uv = dratug.GetUVRegion(new RectInt(Random.Shared.Next(0, 4) * 16, 0, 16))
-			});
-		}
+			anchorMin = Vector2.zero,
+			anchorMax = Vector2.right,
+			spacing = 5,
+			padding = new Region(0, 0, 5, 0)
+		};
+		foreach (var tokenData in DataManager.characters)
+			layout.AddChild(new SelectCharacter(tokenData));
+		
 		var element = new ScrollView(layout, withHorizontal: false)
 		{
-			anchorMin = Vector2.zero, anchorMax = Vector2.one
+			anchorMin = Vector2.zero, anchorMax = Vector2.one, active = false, scrollSpeed = 25
 		};
-		element.active = false;
 		sidePanel.AddChild(element);
 		return element;
 	}

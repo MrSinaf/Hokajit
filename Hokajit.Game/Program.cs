@@ -2,6 +2,8 @@
 global using Ratelite.Debugs;
 #endif
 
+using Hokajit;
+using Hokajit.Objects;
 using Hokajit.Scenes;
 using Ratelite;
 using Ratelite.GO;
@@ -39,7 +41,7 @@ R.CreateGame("Hokajit")
 			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/grab.png")).AsRawImage()
 		 );
 		 
-		 progress.Report(0.25F);
+		 progress.Report(0.1F);
 		 var ui = await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--display.ttf",
@@ -59,8 +61,8 @@ R.CreateGame("Hokajit")
 		 );
 		 Vault.AddAsset(
 			 "panel.mat", new MaterialUI(Vault.GetAsset<Shader>(UIModule.DEFAULT_SHADER))
-						   .SetTexture(ui)
-						   .SetNinePatch(new Region(3, 3, 1 ,1), 5)
+						  .SetTexture(ui)
+						  .SetNinePatch(new Region(3, 3, 1, 1), 5)
 		 );
 		 UIPrefab.Add<Button>(string.Empty, ButtonPrefab);
 		 UIPrefab.Add<Button>("big", ButtonBigPrefab);
@@ -68,18 +70,135 @@ R.CreateGame("Hokajit")
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 UIPrefab.Add<Panel>(string.Empty, PanelPrefab);
 		 UIPrefab.Add<ElementButton>("icon", ElementButtonIconPrefab);
-		 progress.Report(0.5F);
+		 progress.Report(0.25F);
 		 
-		 await Vault.LoadResourceAsync<Texture2D>("textures/units/dratug.png", "units/dratug");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/units/mortiferi.png",
-			 "units/mortiferi");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/units/on-tek.png", "units/on-tek");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/units/orq.png", "units/orq");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/units/sarka.png", "units/sarka");
-		 progress.Report(0.75F);
+		 var t = (await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/units/dratug.png", "units/dratug"
+		 ))!;
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Travailleur - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
+			 ),
+			 new TokenData(
+				 "Guerrier - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
+			 ),
+			 new TokenData(
+				 "Tireur - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 0, 16))
+			 ),
+			 new TokenData(
+				 "Spécial - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(48, 0, 16))
+			 )
+		 );
+		 t = (await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/units/mortiferi.png", "units/mortiferi"
+		 ))!;
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Travailleur - Mortiferi", new Vector2(16), t,
+				 t.GetUVRegion(new RectInt(0, 16, 16))
+			 ),
+			 new TokenData(
+				 "Guerrier - Mortiferi", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+			 ),
+			 new TokenData(
+				 "Tireur - Mortiferi", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 ),
+			 new TokenData(
+				 "Spécial - Mortiferi", new Vector2(16, 32), t,
+				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
+			 )
+		 );
+		 t = (await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/units/on-tek.png", "units/on-tek"
+		 ))!;
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Travailleur - On-Tek", new Vector2(16), t,
+				 t.GetUVRegion(new RectInt(0, 16, 16))
+			 ),
+			 new TokenData(
+				 "Guerrier - On-Tek", new Vector2(16, 32), t, 
+				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 ),
+			 new TokenData(
+				 "Tireur - On-Tek", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 ),
+			 new TokenData("Spécial - On-Tek", new Vector2(16, 32), t,
+				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
+			 )
+		 );
+		 t = (await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/units/orq.png", "units/orq"
+		 ))!;
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Travailleur - Orq", new Vector2(16), t,
+				 t.GetUVRegion(new RectInt(0, 16, 16))
+			 ),
+			 new TokenData(
+				 "Guerrier - Orq", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 ),
+			 new TokenData(
+				 "Tireur - Orq", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(32, 0, 16, 32))
+			 ),
+			 new TokenData("Spécial - Orq", new Vector2(16), t,
+				 t.GetUVRegion(new RectInt(48, 16, 16))
+			 )
+		 );
+		 t = (await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/units/sarka.png", "units/sarka"
+		 ))!;
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Travailleur - Sarka", new Vector2(16), t,
+				 t.GetUVRegion(new RectInt(0, 16, 16))
+			 ),
+			 new TokenData(
+				 "Guerrier - Sarka", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 ),
+			 new TokenData(
+				 "Tireur - Sarka", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 ),
+			 new TokenData("Spécial - Sarka", new Vector2(16, 32), t,
+				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
+			 )
+		 );
+		 progress.Report(0.5F);
 		 
 		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
 		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
+		 progress.Report(0.75F);
+		 
+		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-sanlord.png");
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Sanl'ord", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
+			 ),
+			 new TokenData(
+				 "Snixk, le geôlier", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
+			 ),
+			 new TokenData(
+				 "Garde royal sanlord", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 16, 16))
+			 ),
+			 new TokenData(
+				 "Conseillé de sanlord", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+			 )
+		 );
+		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
+		 DataManager.characters.AddRange(
+			 new TokenData(
+				 "Urh l'puant", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(0, 0, 16, 32))
+			 ),
+			 new TokenData(
+				 "Krok", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 ),
+			 new TokenData(
+				 "Jigur", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 ),
+			 new TokenData(
+				 "Passin-Ra", new Vector2(16), t, t.GetUVRegion(new RectInt(48, 16, 16))
+			 )
+		 );
 		 progress.Report(1);
 	 }
  )

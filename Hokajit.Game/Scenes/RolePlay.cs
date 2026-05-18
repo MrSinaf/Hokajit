@@ -8,12 +8,15 @@ namespace Hokajit.Scenes;
 
 public class RolePlay : Scene
 {
-	private World world = null!;
-	private Canvas canvas = null!;
+	public static RolePlay m { get; private set; }= null!;
+	
+	public World world = null!;
+	public Canvas canvas = null!;
 	private Camera camera = null!;
 	
 	public override void Init()
 	{
+		m = this;
 		world = AddPlugin<World>();
 		canvas = AddPlugin<Canvas>();
 	}
