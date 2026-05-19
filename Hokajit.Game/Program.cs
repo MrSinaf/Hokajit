@@ -70,6 +70,7 @@ R.CreateGame("Hokajit")
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 UIPrefab.Add<Panel>(string.Empty, PanelPrefab);
 		 UIPrefab.Add<ElementButton>("icon", ElementButtonIconPrefab);
+		 UIPrefab.Add<ScrollBar>(string.Empty, ScrollBarPrefab);
 		 progress.Report(0.25F);
 		 
 		 var t = (await Vault.LoadResourceAsync<Texture2D>(
@@ -278,6 +279,24 @@ void PanelPrefab(Panel e)
 	e.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
 	e.size = new Vector2(300);
 	e.padding = new Region(10);
+}
+
+void ScrollBarPrefab(ScrollBar e)
+{
+	e.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
+	e.material = Vault.GetAsset<MaterialUI>(UIModule.DEFAULT_MATERIAL);
+	e.tint = new Color(0x41474F);
+	e.cornerRadius = new Region(5);
+	e.size = e.orientation == Orientation.Horizontal
+			? new Vector2(150, 30)
+			: new Vector2(30, 150);
+	
+	e.cursor.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
+	e.cursor.material = Vault.GetAsset<MaterialUI>(UIModule.DEFAULT_MATERIAL);
+	e.cursor.anchorMin = Vector2.zero;
+	e.cursor.anchorMax = Vector2.one;
+	e.cursor.tint = new Color(0x26354A);
+	e.cursor.cornerRadius = new Region(5);
 }
 
 void OnMouseEnterButton(UIElement _) => Cursor.SetTexture(1);

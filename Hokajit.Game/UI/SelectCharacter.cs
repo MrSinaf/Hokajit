@@ -30,6 +30,6 @@ public sealed class SelectCharacter : ElementButton
 		layout.AddChild(new Label(data.name));
 		anchorMin = Vector2.zero;
 		anchorMax = Vector2.right;
-		size = new Vector2(128);
+		size = new Vector2(120);
 	}
 }

@@ -37,6 +37,12 @@ public sealed class MJLayout : UIElement
 			scale = new Vector2(4),
 		}, () => selectedContainerPanel = ListingCharacters(), "icon"));
 		buttons.AddChild(new ElementButton(new Image(ui)
+		{ // Objets
+			size = new Vector2(7, 7),
+			uv = ui.GetUVRegion(new RectInt(31, 37, 7)),
+			scale = new Vector2(4),
+		}, () => { }, "icon"));
+		buttons.AddChild(new ElementButton(new Image(ui)
 		{ // Droits
 			size = new Vector2(8, 7),
 			uv = ui.GetUVRegion(new RectInt(12, 37, 8, 7)),
