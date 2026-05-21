@@ -1,4 +1,5 @@
 ﻿using Hokajit.Objects;
+using Hokajit.Scenes;
 using Ratelite;
 using Ratelite.UI;
 using Ratelite.UI.Widgets;
@@ -7,11 +8,13 @@ namespace Hokajit.UI;
 
 public sealed class SelectCharacter : ElementButton
 {
-	public readonly TokenData data;
+	public readonly CharacterData data;
 	
-	public SelectCharacter(TokenData data)
+	public SelectCharacter(CharacterData data)
 			: base(new Layout { orientation = Orientation.Horizontal }, () => { })
 	{
+		onClick += Click;
+		
 		captureCursorEvent = false;
 		this.data = data;
 		var layout = (Layout)element;
@@ -31,5 +34,15 @@ public sealed class SelectCharacter : ElementButton
 		anchorMin = Vector2.zero;
 		anchorMax = Vector2.right;
 		size = new Vector2(120);
+	}
+	
+	public override void OnDestroy()
+	{
+		onClick -= Click;
+	}
+	
+	private void Click()
+	{
+		RolePlay.m.DropCharacter(data);
 	}
 }

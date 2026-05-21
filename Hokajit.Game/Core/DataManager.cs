@@ -4,5 +4,5 @@ namespace Hokajit;
 
 public static class DataManager
 {
-	public static readonly List<TokenData> characters = [];
+	public static readonly List<CharacterData> characters = [];
 }

@@ -1,4 +1,5 @@
 ﻿using Hokajit.Scenes;
+using Hokajit.UI.Panels;
 using Ratelite;
 using Ratelite.Animations;
 using Ratelite.Resources;
@@ -9,11 +10,11 @@ namespace Hokajit.UI.Layouts;
 
 public sealed class MJLayout : UIElement
 {
-	private readonly Panel sidePanel;
 	private readonly Animator<Panel> sidePanelAnimator;
 	
-	public UIElement? selectedContainerPanel;
-	public UIElement? oldContainerPanel;
+	private readonly ListingCharacters listingCharacters;
+	private UIElement? selectedContainerPanel;
+	private UIElement? oldContainerPanel;
 	
 	public MJLayout()
 	{
@@ -35,7 +36,7 @@ public sealed class MJLayout : UIElement
 			size = new Vector2(8, 7),
 			uv = ui.GetUVRegion(new RectInt(2, 37, 8, 7)),
 			scale = new Vector2(4),
-		}, () => selectedContainerPanel = ListingCharacters(), "icon"));
+		}, () => selectedContainerPanel = listingCharacters, "icon"));
 		buttons.AddChild(new ElementButton(new Image(ui)
 		{ // Objets
 			size = new Vector2(7, 7),
@@ -56,14 +57,16 @@ public sealed class MJLayout : UIElement
 		}, () => { }, "icon"));
 		AddChild(buttons);
 		
-		AddChild(sidePanel = new Panel
+		var sidePanel = new Panel
 		{
 			position = new Vector2(-450, 0),
 			size = new Vector2(450),
 			anchorMin = Vector2.zero,
 			anchorMax = new Vector2(0, 1),
 			margin = new Region(0, 45, 0, 45)
-		});
+		};
+		AddChild(sidePanel);
+		sidePanel.AddChild(listingCharacters = new ListingCharacters { active = false });
 		sidePanelAnimator = sidePanel.components.AddComponent<Animator<Panel>>();
 		var controller = new AnimationController<Panel>();
 		var showAnimation = new AnimationTrack<Panel, float>(
@@ -89,7 +92,7 @@ public sealed class MJLayout : UIElement
 		{
 			if (selectedContainerPanel != null)
 			{
-				oldContainerPanel?.Destroy();
+				oldContainerPanel?.active = false;
 				selectedContainerPanel.active = true;
 				oldContainerPanel = selectedContainerPanel;
 				selectedContainerPanel = null;
@@ -118,25 +121,5 @@ public sealed class MJLayout : UIElement
 	{
 		if (!RolePlay.m.canvas.hasElementHovered && sidePanelAnimator.block.name == "isShow")
 			sidePanelAnimator.SetBlock("hide");
-	}
-	
-	private UIElement ListingCharacters()
-	{
-		var layout = new Layout
-		{
-			anchorMin = Vector2.zero,
-			anchorMax = Vector2.right,
-			spacing = 5,
-			padding = new Region(0, 0, 5, 0)
-		};
-		foreach (var tokenData in DataManager.characters)
-			layout.AddChild(new SelectCharacter(tokenData));
-		
-		var element = new ScrollView(layout, withHorizontal: false)
-		{
-			anchorMin = Vector2.zero, anchorMax = Vector2.one, active = false, scrollSpeed = 25
-		};
-		sidePanel.AddChild(element);
-		return element;
 	}
 }

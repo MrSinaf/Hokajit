@@ -11,6 +11,7 @@ using Ratelite.Resources;
 using Ratelite.Sounds;
 using Ratelite.UI;
 using Ratelite.UI.Widgets;
+using Ratelite.Utils;
 
 #if DEBUG
 RDebug.showMenuBar = false;
@@ -40,8 +41,8 @@ R.CreateGame("Hokajit")
 		 Cursor.AddTexture(
 			 (await Vault.LoadResourceAsync<Texture2D>("textures/cursors/grab.png")).AsRawImage()
 		 );
-		 
 		 progress.Report(0.1F);
+		 
 		 var ui = await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--display.ttf",
@@ -77,35 +78,35 @@ R.CreateGame("Hokajit")
 			 "textures/units/dratug.png", "units/dratug"
 		 ))!;
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Travailleur - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
+			 new CharacterData(
+				 "Travailleur - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
 			 ),
-			 new TokenData(
-				 "Guerrier - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
+			 new CharacterData(
+				 "Guerrier - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
 			 ),
-			 new TokenData(
-				 "Tireur - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 0, 16))
+			 new CharacterData(
+				 "Tireur - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 0, 16))
 			 ),
-			 new TokenData(
-				 "Spécial - Dratug", new Vector2(16), t, t.GetUVRegion(new RectInt(48, 0, 16))
+			 new CharacterData(
+				 "Spécial - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(48, 0, 16))
 			 )
 		 );
 		 t = (await Vault.LoadResourceAsync<Texture2D>(
 			 "textures/units/mortiferi.png", "units/mortiferi"
 		 ))!;
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Travailleur - Mortiferi", new Vector2(16), t,
+			 new CharacterData(
+				 "Travailleur - Mortiferi", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
-			 new TokenData(
-				 "Guerrier - Mortiferi", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+			 new CharacterData(
+				 "Guerrier - Mortiferi", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
 			 ),
-			 new TokenData(
-				 "Tireur - Mortiferi", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 new CharacterData(
+				 "Tireur - Mortiferi", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
 			 ),
-			 new TokenData(
-				 "Spécial - Mortiferi", new Vector2(16, 32), t,
+			 new CharacterData(
+				 "Spécial - Mortiferi", new Vector2Int(16, 32), t,
 				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
 			 )
 		 );
@@ -113,18 +114,18 @@ R.CreateGame("Hokajit")
 			 "textures/units/on-tek.png", "units/on-tek"
 		 ))!;
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Travailleur - On-Tek", new Vector2(16), t,
+			 new CharacterData(
+				 "Travailleur - On-Tek", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
-			 new TokenData(
-				 "Guerrier - On-Tek", new Vector2(16, 32), t, 
+			 new CharacterData(
+				 "Guerrier - On-Tek", new Vector2Int(16, 32), t,
 				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
 			 ),
-			 new TokenData(
-				 "Tireur - On-Tek", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 new CharacterData(
+				 "Tireur - On-Tek", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
 			 ),
-			 new TokenData("Spécial - On-Tek", new Vector2(16, 32), t,
+			 new CharacterData("Spécial - On-Tek", new Vector2Int(16, 32), t,
 				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
 			 )
 		 );
@@ -132,17 +133,17 @@ R.CreateGame("Hokajit")
 			 "textures/units/orq.png", "units/orq"
 		 ))!;
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Travailleur - Orq", new Vector2(16), t,
+			 new CharacterData(
+				 "Travailleur - Orq", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
-			 new TokenData(
-				 "Guerrier - Orq", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 new CharacterData(
+				 "Guerrier - Orq", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
 			 ),
-			 new TokenData(
-				 "Tireur - Orq", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(32, 0, 16, 32))
+			 new CharacterData(
+				 "Tireur - Orq", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(32, 0, 16, 32))
 			 ),
-			 new TokenData("Spécial - Orq", new Vector2(16), t,
+			 new CharacterData("Spécial - Orq", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(48, 16, 16))
 			 )
 		 );
@@ -150,17 +151,18 @@ R.CreateGame("Hokajit")
 			 "textures/units/sarka.png", "units/sarka"
 		 ))!;
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Travailleur - Sarka", new Vector2(16), t,
+			 new CharacterData(
+				 "Travailleur - Sarka", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
-			 new TokenData(
-				 "Guerrier - Sarka", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 new CharacterData(
+				 "Guerrier - Sarka", new Vector2Int(16, 32), t,
+				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
 			 ),
-			 new TokenData(
-				 "Tireur - Sarka", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 new CharacterData(
+				 "Tireur - Sarka", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
 			 ),
-			 new TokenData("Spécial - Sarka", new Vector2(16, 32), t,
+			 new CharacterData("Spécial - Sarka", new Vector2Int(16, 32), t,
 				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
 			 )
 		 );
@@ -172,32 +174,32 @@ R.CreateGame("Hokajit")
 		 
 		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-sanlord.png");
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Sanl'ord", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
+			 new CharacterData(
+				 "Sanl'ord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
 			 ),
-			 new TokenData(
-				 "Snixk, le geôlier", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
+			 new CharacterData(
+				 "Snixk, le geôlier", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
 			 ),
-			 new TokenData(
-				 "Garde royal sanlord", new Vector2(16), t, t.GetUVRegion(new RectInt(0, 16, 16))
+			 new CharacterData(
+				 "Garde royal sanlord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
-			 new TokenData(
-				 "Conseillé de sanlord", new Vector2(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+			 new CharacterData(
+				 "Conseillé de sanlord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
 			 )
 		 );
 		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
 		 DataManager.characters.AddRange(
-			 new TokenData(
-				 "Urh l'puant", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(0, 0, 16, 32))
+			 new CharacterData(
+				 "Urh l'puant", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(0, 0, 16, 32))
 			 ),
-			 new TokenData(
-				 "Krok", new Vector2(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+			 new CharacterData(
+				 "Krok", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
 			 ),
-			 new TokenData(
-				 "Jigur", new Vector2(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
+			 new CharacterData(
+				 "Jigur", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
 			 ),
-			 new TokenData(
-				 "Passin-Ra", new Vector2(16), t, t.GetUVRegion(new RectInt(48, 16, 16))
+			 new CharacterData(
+				 "Passin-Ra", new Vector2Int(16), t, t.GetUVRegion(new RectInt(48, 16, 16))
 			 )
 		 );
 		 progress.Report(1);
