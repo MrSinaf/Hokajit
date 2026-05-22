@@ -84,6 +84,7 @@ public class RolePlay : Scene
 		if (canvas.hasElementHovered)
 			return;
 		
+		layout.contextMenu.active = false;
 		if (button == MouseButton.Left)
 		{
 			if (selectCharacter != null)
@@ -96,6 +97,11 @@ public class RolePlay : Scene
 				});
 				selectCharacter = null;
 			}
+		}
+		else if (button == MouseButton.Right)
+		{
+			layout.contextMenu.active = true;
+			layout.contextMenu.position = R.game.window.cursorPosition;
 		}
 		else if (button == MouseButton.Middle)
 		{

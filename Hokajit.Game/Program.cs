@@ -11,7 +11,6 @@ using Ratelite.Resources;
 using Ratelite.Sounds;
 using Ratelite.UI;
 using Ratelite.UI.Widgets;
-using Ratelite.Utils;
 
 #if DEBUG
 RDebug.showMenuBar = false;

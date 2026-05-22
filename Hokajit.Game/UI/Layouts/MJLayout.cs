@@ -16,6 +16,8 @@ public sealed class MJLayout : UIElement
 	private UIElement? selectedContainerPanel;
 	private UIElement? oldContainerPanel;
 	
+	public ContextMenu contextMenu;
+	
 	public MJLayout()
 	{
 		isInteractive = false;
@@ -23,6 +25,7 @@ public sealed class MJLayout : UIElement
 		anchorMax = Vector2.one;
 		R.game.window.mouseButtonPressed += OnMouseButtonPressed;
 		
+		AddChild(contextMenu = new ContextMenu());
 		var buttons = new Layout
 		{
 			position = new Vector2(0, 5),

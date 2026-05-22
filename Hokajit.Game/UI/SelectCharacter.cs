@@ -21,9 +21,10 @@ public sealed class SelectCharacter : ElementButton
 		layout.pivotAndAnchors = new Vector2(0, 0.5F);
 		layout.padding = new Region(5);
 		layout.alignment = 1;
-		var icon = new UIElement { size = new Vector2(100) };
+		var icon = new UIElement { size = new Vector2(100), captureCursorEvent = false };
 		icon.AddChild(new Image(data.texture)
 		{
+			captureCursorEvent = false,
 			uv = data.uv, 
 			size = data.size.aspect,
 			scale = new Vector2(data.size.y <= 16 ? 50 : 100, data.size.y <= 16 ? 50 : 100), 
