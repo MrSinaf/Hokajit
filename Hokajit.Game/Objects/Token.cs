@@ -15,6 +15,13 @@ public class Token : RObject
 		mesh = Vault.GetAsset<Mesh>(data.size + ".mesh");
 		material = new MaterialObject().SetTexture(data.texture).SetUVRegion(data.uv);
 	}
+	
+	protected override void Update()
+	{
+		drawOrder = -(int)(position.y * Game.TILE_SIZE);
+	}
+	
+	
 }
 
 public record class TokenData(string name, Vector2Int size, Texture2D texture, Region uv);

@@ -30,6 +30,7 @@ public class Map : RObject
 		}
 		mesh = MeshFactory.CreateQuads(meshes);
 		material = new MaterialObject().SetTexture(tiles);
+		drawOrder = int.MinValue;
 	}
 	
 	public static Vector2 WorldPositionToCell(Vector2 position)
