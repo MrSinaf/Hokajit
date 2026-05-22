@@ -84,7 +84,7 @@ public class RolePlay : Scene
 		if (canvas.hasElementHovered)
 			return;
 		
-		layout.contextMenu.active = false;
+		layout.contextMenu.show = false;
 		if (button == MouseButton.Left)
 		{
 			if (selectCharacter != null)
@@ -100,8 +100,10 @@ public class RolePlay : Scene
 		}
 		else if (button == MouseButton.Right)
 		{
-			layout.contextMenu.active = true;
-			layout.contextMenu.position = R.game.window.cursorPosition;
+			layout.contextMenu.show = true;
+			layout.contextMenu.position = camera.WorldToScreenPosition(Map.WorldPositionToCell(
+				camera.ScreenToWorldPosition(R.game.window.cursorPosition)
+			) + new Vector2(Game.TILE_SIZE * 0.5F, Game.TILE_SIZE + Game.TILE_SIZE * 0.1F));
 		}
 		else if (button == MouseButton.Middle)
 		{
