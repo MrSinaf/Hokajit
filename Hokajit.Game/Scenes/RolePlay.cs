@@ -14,6 +14,7 @@ public class RolePlay : Scene
 	public Canvas canvas = null!;
 	public MJLayout layout = null!;
 	private Camera camera = null!;
+	private Map map = null!;
 	
 	private CharacterData? selectCharacter;
 	
@@ -29,7 +30,7 @@ public class RolePlay : Scene
 		canvas.root.AddChild(layout = new MJLayout());
 		
 		camera = world.camera;
-		world.AddObject(new Map(new Vector2Int(100)));
+		world.AddObject(map = new Map(new Vector2Int(100)));
 		camera.zoom = 5;
 		camera.position = new Vector2(50 * Game.TILE_SIZE);
 		
@@ -89,21 +90,34 @@ public class RolePlay : Scene
 		{
 			if (selectCharacter != null)
 			{
-				world.AddObject(new Character(selectCharacter)
+				var position = Map.WorldPositionToCell(
+					camera.ScreenToWorldPosition(R.game.window.cursorPosition)
+				);
+				var character = new Character(selectCharacter)
 				{
-					position = Map.WorldPositionToCell(
-						camera.ScreenToWorldPosition(R.game.window.cursorPosition)
-					)
-				});
+					position = position * Game.TILE_SIZE
+				};
+				map.SetToken(position, character);
+				world.AddObject(character);
 				selectCharacter = null;
 			}
 		}
 		else if (button == MouseButton.Right)
 		{
-			layout.contextMenu.show = true;
-			layout.contextMenu.position = camera.WorldToScreenPosition(Map.WorldPositionToCell(
+			var cursorPosition = Map.WorldPositionToCell(
 				camera.ScreenToWorldPosition(R.game.window.cursorPosition)
-			) + new Vector2(Game.TILE_SIZE * 0.5F, Game.TILE_SIZE + Game.TILE_SIZE * 0.1F));
+			);
+			map.SetFloor(cursorPosition, DataManager.tiles[6]);
+			
+			if (map.GetToken(cursorPosition, out var token))
+			{
+				layout.contextMenu.show = true;
+				layout.contextMenu.position = camera.WorldToScreenPosition(Map.WorldPositionToCell(
+					camera.ScreenToWorldPosition(R.game.window.cursorPosition)
+				) * Game.TILE_SIZE + new Vector2(
+					Game.TILE_SIZE * 0.5F, Game.TILE_SIZE + Game.TILE_SIZE * 0.1F
+				));
+			}
 		}
 		else if (button == MouseButton.Middle)
 		{

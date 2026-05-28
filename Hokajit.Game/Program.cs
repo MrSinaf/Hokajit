@@ -99,7 +99,8 @@ R.CreateGame("Hokajit")
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
 			 new CharacterData(
-				 "Guerrier - Mortiferi", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+				 "Guerrier - Mortiferi", new Vector2Int(16), t,
+				 t.GetUVRegion(new RectInt(16, 16, 16))
 			 ),
 			 new CharacterData(
 				 "Tireur - Mortiferi", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
@@ -137,10 +138,12 @@ R.CreateGame("Hokajit")
 				 t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
 			 new CharacterData(
-				 "Guerrier - Orq", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
+				 "Guerrier - Orq", new Vector2Int(16, 32), t,
+				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
 			 ),
 			 new CharacterData(
-				 "Tireur - Orq", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(32, 0, 16, 32))
+				 "Tireur - Orq", new Vector2Int(16, 32), t,
+				 t.GetUVRegion(new RectInt(32, 0, 16, 32))
 			 ),
 			 new CharacterData("Spécial - Orq", new Vector2Int(16), t,
 				 t.GetUVRegion(new RectInt(48, 16, 16))
@@ -167,7 +170,32 @@ R.CreateGame("Hokajit")
 		 );
 		 progress.Report(0.5F);
 		 
-		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
+		 var tiles = await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
+		 DataManager.tiles.Add(0,
+			 new TileData(0, tiles.GetUVRegion(new RectInt(0, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(1, 
+			 new TileData(1, tiles.GetUVRegion(new RectInt(16, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(2, 
+			 new TileData(2, tiles.GetUVRegion(new RectInt(32, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(3, 
+			 new TileData(3, tiles.GetUVRegion(new RectInt(48, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(4,
+			 new TileData(4, tiles.GetUVRegion(new RectInt(64, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(5,
+			 new TileData(5, tiles.GetUVRegion(new RectInt(80, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(6, 
+			 new TileData(6, tiles.GetUVRegion(new RectInt(96, 0, 16, 16)), true)
+		 );
+		 DataManager.tiles.Add(7, 
+			 new TileData(7, tiles.GetUVRegion(new RectInt(112, 0, 16, 16)), true)
+		 );
+		 
 		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
 		 progress.Report(0.75F);
 		 
@@ -183,7 +211,8 @@ R.CreateGame("Hokajit")
 				 "Garde royal sanlord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 16, 16))
 			 ),
 			 new CharacterData(
-				 "Conseillé de sanlord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 16, 16))
+				 "Conseillé de sanlord", new Vector2Int(16), t,
+				 t.GetUVRegion(new RectInt(16, 16, 16))
 			 )
 		 );
 		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
