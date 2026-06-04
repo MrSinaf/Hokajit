@@ -1,9 +1,8 @@
 ﻿#if DEBUG
 global using Ratelite.Debugs;
+global using Ratelite.GO.Debugs;
 #endif
 
-using Hokajit;
-using Hokajit.Objects;
 using Hokajit.Scenes;
 using Ratelite;
 using Ratelite.GO;
@@ -12,10 +11,6 @@ using Ratelite.Sounds;
 using Ratelite.UI;
 using Ratelite.UI.Widgets;
 
-#if DEBUG
-RDebug.showMenuBar = false;
-#endif
-
 R.CreateGame("Hokajit")
  .SetIcon("assets/icon.png")
  .AddModule<SoundModule>()
@@ -23,6 +18,7 @@ R.CreateGame("Hokajit")
  .AddModule<UIModule>()
 #if DEBUG
  .AddModule<DebugModule>()
+ .AddModule<GODebugModule>()
 #endif
  .SetStartingScene<Splash>()
  .LoadingAssets(async progress =>
@@ -69,167 +65,23 @@ R.CreateGame("Hokajit")
 		 UIPrefab.Add<Label>(string.Empty, LabelPrefrab);
 		 UIPrefab.Add<Label>("big", LabelBigPrefab);
 		 UIPrefab.Add<Panel>(string.Empty, PanelPrefab);
+		 UIPrefab.Add<Panel>("group", PanelGroupPrefab);
 		 UIPrefab.Add<ElementButton>("icon", ElementButtonIconPrefab);
 		 UIPrefab.Add<ScrollBar>(string.Empty, ScrollBarPrefab);
 		 progress.Report(0.25F);
 		 
-		 var t = (await Vault.LoadResourceAsync<Texture2D>(
-			 "textures/units/dratug.png", "units/dratug"
-		 ))!;
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Travailleur - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
-			 ),
-			 new CharacterData(
-				 "Guerrier - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
-			 ),
-			 new CharacterData(
-				 "Tireur - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 0, 16))
-			 ),
-			 new CharacterData(
-				 "Spécial - Dratug", new Vector2Int(16), t, t.GetUVRegion(new RectInt(48, 0, 16))
-			 )
-		 );
-		 t = (await Vault.LoadResourceAsync<Texture2D>(
-			 "textures/units/mortiferi.png", "units/mortiferi"
-		 ))!;
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Travailleur - Mortiferi", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(0, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Guerrier - Mortiferi", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(16, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Tireur - Mortiferi", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Spécial - Mortiferi", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
-			 )
-		 );
-		 t = (await Vault.LoadResourceAsync<Texture2D>(
-			 "textures/units/on-tek.png", "units/on-tek"
-		 ))!;
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Travailleur - On-Tek", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(0, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Guerrier - On-Tek", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
-			 ),
-			 new CharacterData(
-				 "Tireur - On-Tek", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
-			 ),
-			 new CharacterData("Spécial - On-Tek", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
-			 )
-		 );
-		 t = (await Vault.LoadResourceAsync<Texture2D>(
-			 "textures/units/orq.png", "units/orq"
-		 ))!;
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Travailleur - Orq", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(0, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Guerrier - Orq", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
-			 ),
-			 new CharacterData(
-				 "Tireur - Orq", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(32, 0, 16, 32))
-			 ),
-			 new CharacterData("Spécial - Orq", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(48, 16, 16))
-			 )
-		 );
-		 t = (await Vault.LoadResourceAsync<Texture2D>(
-			 "textures/units/sarka.png", "units/sarka"
-		 ))!;
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Travailleur - Sarka", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(0, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Guerrier - Sarka", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(16, 0, 16, 32))
-			 ),
-			 new CharacterData(
-				 "Tireur - Sarka", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
-			 ),
-			 new CharacterData("Spécial - Sarka", new Vector2Int(16, 32), t,
-				 t.GetUVRegion(new RectInt(48, 0, 16, 32))
-			 )
-		 );
+		 const string unitsPath = "textures/units/";
+		 await Vault.LoadResourceAsync<Texture2D>(unitsPath + "dratug.png", "units/dratug");
+		 await Vault.LoadResourceAsync<Texture2D>(unitsPath + "mortiferi.png", "units/mortiferi");
+		 await Vault.LoadResourceAsync<Texture2D>(unitsPath + "on-tek.png", "units/on-tek");
+		 await Vault.LoadResourceAsync<Texture2D>(unitsPath + "orq.png", "units/orq");
 		 progress.Report(0.5F);
-		 
-		 var tiles = await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
-		 DataManager.tiles.Add(0,
-			 new TileData(0, tiles.GetUVRegion(new RectInt(0, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(1, 
-			 new TileData(1, tiles.GetUVRegion(new RectInt(16, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(2, 
-			 new TileData(2, tiles.GetUVRegion(new RectInt(32, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(3, 
-			 new TileData(3, tiles.GetUVRegion(new RectInt(48, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(4,
-			 new TileData(4, tiles.GetUVRegion(new RectInt(64, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(5,
-			 new TileData(5, tiles.GetUVRegion(new RectInt(80, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(6, 
-			 new TileData(6, tiles.GetUVRegion(new RectInt(96, 0, 16, 16)), true)
-		 );
-		 DataManager.tiles.Add(7, 
-			 new TileData(7, tiles.GetUVRegion(new RectInt(112, 0, 16, 16)), true)
-		 );
 		 
 		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
 		 progress.Report(0.75F);
 		 
-		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-sanlord.png");
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Sanl'ord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 0, 16))
-			 ),
-			 new CharacterData(
-				 "Snixk, le geôlier", new Vector2Int(16), t, t.GetUVRegion(new RectInt(16, 0, 16))
-			 ),
-			 new CharacterData(
-				 "Garde royal sanlord", new Vector2Int(16), t, t.GetUVRegion(new RectInt(0, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Conseillé de sanlord", new Vector2Int(16), t,
-				 t.GetUVRegion(new RectInt(16, 16, 16))
-			 )
-		 );
-		 t = await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
-		 DataManager.characters.AddRange(
-			 new CharacterData(
-				 "Urh l'puant", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(0, 0, 16, 32))
-			 ),
-			 new CharacterData(
-				 "Krok", new Vector2Int(16, 32), t, t.GetUVRegion(new RectInt(16, 0, 16, 32))
-			 ),
-			 new CharacterData(
-				 "Jigur", new Vector2Int(16), t, t.GetUVRegion(new RectInt(32, 16, 16))
-			 ),
-			 new CharacterData(
-				 "Passin-Ra", new Vector2Int(16), t, t.GetUVRegion(new RectInt(48, 16, 16))
-			 )
-		 );
+		 await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-sanlord.png");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
 		 progress.Report(1);
 	 }
  )
@@ -309,6 +161,14 @@ void PanelPrefab(Panel e)
 	e.mesh = Vault.GetAsset<Mesh>(UIModule.DEFAULT_MESH);
 	e.size = new Vector2(300);
 	e.padding = new Region(10);
+}
+
+void PanelGroupPrefab(Panel e)
+{
+	e.anchorMin = Vector2.zero;
+	e.anchorMax = Vector2.one;
+	e.padding = new Region(20);
+	e.isInteractive = false;
 }
 
 void ScrollBarPrefab(ScrollBar e)

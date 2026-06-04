@@ -26,15 +26,12 @@ public class Splash : Scene
 	
 	public override async Task Load()
 	{
-		// TODO > Ratelite ne supporte pas le fait que les meshes puissent être créé dans le
+		// Ratelite ne supporte pas le fait que les meshes puissent être créé dans le
 		// SplashWindow, donc pour le moment on fait le ici...
 		 MainThread.Enqueue(() =>
 		 {
-			 Vault.AddAsset("(16:16).mesh", MeshFactory.CreateQuad(new Vector2(Game.TILE_SIZE)));
-			 Vault.AddAsset(
-				 "(16:32).mesh",
-				 MeshFactory.CreateQuad(new Vector2(Game.TILE_SIZE, Game.TILE_SIZE * 2))
-			 );
+			 Vault.AddAsset("(16:16).mesh", MeshFactory.CreateQuad(new Vector2(16)));
+			 Vault.AddAsset("(16:32).mesh", MeshFactory.CreateQuad(new Vector2(16, 32)));
 		 });
 		 await MainThread.Wait();
 		audioSource = new AudioSource

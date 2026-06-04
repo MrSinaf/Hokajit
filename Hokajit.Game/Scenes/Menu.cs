@@ -8,8 +8,10 @@ namespace Hokajit.Scenes;
 public class Menu : Scene
 {
 	private Canvas canvas = null!;
-	private Layout mainButtons = null!;
-	private Layout modeButtons = null!;
+	
+	private Panel mainMenu = null!;
+	private Panel optionsMenu = null!;
+	private Panel gameMenu = null!;
 	
 	public override void Init()
 	{
@@ -20,14 +22,15 @@ public class Menu : Scene
 	{
 		var ui = Vault.GetAsset<Texture2D>("ui")!;
 		
-		canvas.root.padding = new Region(20);
-		canvas.root.AddChild(
+		//Main
+		canvas.root.AddChild(mainMenu = new Panel("group"));
+		mainMenu.AddChild(
 			new Label("Développé par MrSinaf | PurrVert")
 			{
 				pivotAndAnchors = new Vector2(0.5F, 0),
 			}
 		);
-		canvas.root.AddChild(
+		mainMenu.AddChild(
 			new Image(ui)
 			{
 				uv = ui.GetUVRegion(new RectInt(0, 13, 76, 19)),
@@ -39,7 +42,7 @@ public class Menu : Scene
 			}
 		);
 		
-		mainButtons = new Layout
+		var buttons = new Layout
 		{
 			orientation = Orientation.Horizontal,
 			anchors = new Vector2(0.5F),
@@ -47,59 +50,37 @@ public class Menu : Scene
 			position = new Vector2(0, -5),
 			spacing = 10
 		};
-		mainButtons.AddChild(
+		buttons.AddChild(
 			new Button(
 				"Jouer",
 				() =>
 				{
-					mainButtons.active = false;
-					modeButtons.active = true;
+					Stage.Load(new Game());
+					
+					mainMenu.active = false;
+					gameMenu.active = true;
 				}
 			)
 		);
-		mainButtons.AddChild(
+		buttons.AddChild(
 			new Button(
 				"Options",
 				() =>
-				{ 
-					// Ignore pour le moment... ¬_¬
-				}
-			)
-		);
-		mainButtons.AddChild(new Button("Quitter", () => R.game.window.Close()));
-		canvas.root.AddChild(mainButtons);
-		
-		modeButtons = new Layout
-		{
-			pivot = new Vector2(0.5F, 1),
-			anchors = new Vector2(0.5F, 0.5F),
-			position = new Vector2(0, -42),
-			active = false,
-			alignment = 0.5F,
-			spacing = 100
-		};
-		canvas.root.AddChild(modeButtons);
-		var buttons = new Layout
-		{
-			orientation = Orientation.Horizontal,
-			spacing = 200
-		};
-		modeButtons.AddChild(buttons);
-		buttons.AddChild(new Button("JDR", () =>
-		{
-			Stage.Load(new RolePlay());
-			Cursor.SetTexture(0);
-		}, "big"));
-		buttons.AddChild(new Button("RTS", () => { }, "big"));
-		modeButtons.AddChild(
-			new Button(
-				"Retour",
-				() =>
 				{
-					modeButtons.active = false;
-					mainButtons.active = true;
+					mainMenu.active = false;
+					optionsMenu.active = true;
 				}
 			)
 		);
+		buttons.AddChild(new Button("Quitter", () => R.game.window.Close()));
+		mainMenu.AddChild(buttons);
+		
+		// Option
+		canvas.root.AddChild(optionsMenu = new Panel("group"));
+		// TODO > A implémenter <( _ _ )>
+		
+		// Game
+		canvas.root.AddChild(gameMenu = new Panel("group"));
+		
 	}
 }
