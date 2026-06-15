@@ -36,7 +36,6 @@
     
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <ProjectReference Include="..\..\Ratelite\Ratelite.Debugs\Ratelite.Debugs.csproj" />
-        <ProjectReference Include="..\..\Ratelite\Ratelite.GO.Debugs\Ratelite.GO.Debugs.csproj" />
     </ItemGroup>
     <!-- Ratelite end integration   -->
 

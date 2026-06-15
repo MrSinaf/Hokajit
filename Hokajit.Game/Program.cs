@@ -1,6 +1,5 @@
 ﻿#if DEBUG
 global using Ratelite.Debugs;
-global using Ratelite.GO.Debugs;
 #endif
 
 using Hokajit.Scenes;
@@ -18,7 +17,6 @@ R.CreateGame("Hokajit")
  .AddModule<UIModule>()
 #if DEBUG
  .AddModule<DebugModule>()
- .AddModule<GODebugModule>()
 #endif
  .SetStartingScene<Splash>()
  .LoadingAssets(async progress =>
