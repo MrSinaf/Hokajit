@@ -11,7 +11,10 @@ public class Game : Scene
 	
 	public override void Init()
 	{
+		world = AddPlugin<World>();
 		gameMode = AddPlugin<RolePlay>();
-		world = gameMode.world = AddPlugin<World>();
+		gameMode.world = world;
+		
+		Cursor.SetTexture(0);
 	}
 }
