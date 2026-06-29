@@ -5,5 +5,5 @@ namespace Hokajit.GameMode;
 
 public interface IGameMode : IPlugin
 {
-	public World world { set; }
+	
 }

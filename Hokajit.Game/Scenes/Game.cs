@@ -6,14 +6,15 @@ namespace Hokajit.Scenes;
 
 public class Game : Scene
 {
-	public IGameMode gameMode = null!;
-	public World world = null!;
+	private IGameMode gameMode = null!;
+	private World world = null!;
 	
 	public override void Init()
 	{
 		world = AddPlugin<World>();
+		
+		// Pour le moment uniquement le RolePlay (>'-'<)
 		gameMode = AddPlugin<RolePlay>();
-		gameMode.world = world;
 		
 		Cursor.SetTexture(0);
 	}
