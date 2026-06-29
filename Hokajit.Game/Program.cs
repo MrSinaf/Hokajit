@@ -36,7 +36,8 @@ R.CreateGame("Hokajit")
 		 );
 		 progress.Report(0.1F);
 		 
-		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles.png", "tiles");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles__floor.png", "floors");
+		 await Vault.LoadResourceAsync<Texture2D>("textures/tiles__wall.png", "walls");
 		 var ui = await Vault.LoadResourceAsync<Texture2D>("textures/ui.png", "ui");
 		 await Vault.LoadResourceAsync<BitmapFont>(
 			 "fonts/ari-w9500--display.ttf",

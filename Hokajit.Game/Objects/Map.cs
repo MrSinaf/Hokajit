@@ -6,21 +6,33 @@ using Ratelite.Utils;
 
 namespace Hokajit.Objects;
 
-public class Map : RObject
+public class Map
 {
 	public const int TILE_SIZE = 16;
 	private readonly Tile[] tiles = new Tile[100 * 100];
+	private readonly World world;
 	
-	public Map()
+	private readonly RObject floor;
+	private readonly RObject wall;
+	
+	public Map(World world)
 	{
-		var texture = Vault.GetAsset<Texture2D>("tiles")!;
-		var data = new TileData(1, texture.GetUVRegion(new RectInt(4 * TILE_SIZE, 0, TILE_SIZE)));
+		this.world = world;
+		
+		var floorTexture = Vault.GetAsset<Texture2D>("floors")!;
+		var data1 = new TileData(
+			1, floorTexture.GetUVRegion(new RectInt(4 * TILE_SIZE, 0, TILE_SIZE))
+		);
+		var data2 = new TileData(
+			2, floorTexture.GetUVRegion(new RectInt(5 * TILE_SIZE, 0, TILE_SIZE))
+		);
 		
 		var quads = new (Rect vertices, Region region)[100 * 100];
 		for (var x = 0; x < 100; x++)
 		for (var y = 0; y < 100; y++)
 		{
 			ref var tile = ref tiles[x + y * 100];
+			var data = y > 50 ? data2 : data1;
 			tile.position = new Vector2Int(x, y);
 			tile.data = data;
 			
@@ -30,7 +42,31 @@ public class Map : RObject
 			);
 		}
 		
-		mesh = MeshFactory.CreateQuads(quads);
-		material = new MaterialObject().SetTexture(texture);
+		world.AddObject(floor = new RObject
+		{
+			mesh = MeshFactory.CreateQuads(quads),
+			material = new MaterialObject().SetTexture(floorTexture)
+		});
+		
+		
+		var wallTexture = Vault.GetAsset<Texture2D>("walls")!;
+		var data3 = new TileData(
+			3, wallTexture.GetUVRegion(new RectInt(0, 0, TILE_SIZE))
+		);
+		quads = new (Rect vertices, Region region)[100];
+		for (var x = 0; x < 100; x++)
+		{
+			quads[x] = (
+				new Rect(x * TILE_SIZE, 51 * TILE_SIZE, TILE_SIZE),
+				data3.uv
+			);
+		}
+		
+		world.AddObject(wall = new RObject
+		{
+			mesh = MeshFactory.CreateQuads(quads),
+			material = new MaterialObject(Vault.LoadResource<Shader>("shaders/wall.rshad"))
+					.SetTexture(wallTexture)
+		});
 	}
 }

@@ -1,0 +1,28 @@
+uniform mat3 u_model;
+
+uniform sampler2D u_texture;
+uniform vec4 u_uv = vec4(0, 0, 1, 1);
+uniform vec4 u_tint = vec4(1, 1, 1, 1);
+uniform float u_alpha = 1.0;
+
+void mainVertex(in vec2 a_position, in vec2 a_texCoord, out vec2 v_fragCoord, out vec2 v_worldPosition) {
+    vec3 worldPosition = u_model * vec3(a_position, 1.0);
+
+    gl_Position = vec4(projection * worldPosition, 1.0);
+    v_fragCoord = a_texCoord;
+    v_worldPosition = worldPosition.xy;
+}
+
+void mainFragment(in vec2 v_fragCoord, in vec2 v_worldPosition, out vec4 o_fragColor) {
+    float TILE_SIZE = 16.0;
+    o_fragColor = texture(u_texture, mix(u_uv.xy, u_uv.zw, v_fragCoord));
+    o_fragColor.rgb *= u_tint.rgb;
+    o_fragColor.a *= (u_alpha * u_tint.a);
+
+    float tileY = mod(v_worldPosition.y, TILE_SIZE);
+
+    // Bas opaque = 25% bas de la tuile, haut transparent = 75%.
+    if (tileY >= TILE_SIZE * 0.25) {
+        o_fragColor.a = 0.35;
+    }
+}
