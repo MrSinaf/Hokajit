@@ -80,8 +80,14 @@ R.CreateGame("Hokajit")
 		 await Vault.LoadResourceAsync<Texture2D>("textures/purrvert.png", "purrvert");
 		 progress.Report(0.75F);
 		 
-		 await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-sanlord.png");
-		 await Vault.LoadResourceAsync<Texture2D>("textures/characters/clan-puuh.png");
+		 await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/characters/clan-sanlord.png",
+			 "clan-sanlord"
+		 );
+		 await Vault.LoadResourceAsync<Texture2D>(
+			 "textures/characters/clan-puuh.png",
+			 "clan-puuh"
+		 );
 		 progress.Report(1);
 	 }
  )
