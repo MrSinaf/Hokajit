@@ -1,5 +1,4 @@
-﻿using Hokajit.Data;
-using Ratelite;
+﻿using Ratelite;
 using Ratelite.GO;
 using Ratelite.Resources;
 using Ratelite.Utils;
@@ -15,7 +14,17 @@ public class Map
 	private readonly RObject floor;
 	private readonly RObject wall;
 	
-	public Map(World world)
+	public float wallsVisibility
+	{
+		get;
+		set
+		{
+			field = value;
+			wall.material.SetProperty("u_wallsVisibility", value);
+		}
+	} = 1F;
+	
+	public Map(World world, Vector2Int size)
 	{
 		this.world = world;
 		
@@ -27,16 +36,16 @@ public class Map
 			2, floorTexture.GetUVRegion(new RectInt(5 * TILE_SIZE, 0, TILE_SIZE))
 		);
 		
-		var quads = new (Rect vertices, Region region)[100 * 100];
-		for (var x = 0; x < 100; x++)
-		for (var y = 0; y < 100; y++)
+		var quads = new (Rect vertices, Region region)[size.x * size.y];
+		for (var x = 0; x < size.x; x++)
+		for (var y = 0; y < size.y; y++)
 		{
-			ref var tile = ref tiles[x + y * 100];
+			ref var tile = ref tiles[x + y * size.x];
 			var data = y > 50 ? data2 : data1;
 			tile.position = new Vector2Int(x, y);
 			tile.data = data;
 			
-			quads[x + y * 100] = (
+			quads[x + y * size.x] = (
 				new Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE),
 				data.uv
 			);
@@ -53,11 +62,12 @@ public class Map
 		var data3 = new TileData(
 			3, wallTexture.GetUVRegion(new RectInt(0, 0, TILE_SIZE))
 		);
-		quads = new (Rect vertices, Region region)[100];
-		for (var x = 0; x < 100; x++)
+		quads = new (Rect vertices, Region region)[size.x * 2];
+		for (var y = 0; y < 2; y++)
+		for (var x = 0; x < size.x; x++)
 		{
-			quads[x] = (
-				new Rect(x * TILE_SIZE, 51 * TILE_SIZE, TILE_SIZE),
+			quads[x + y * size.x] = (
+				new Rect(x * TILE_SIZE, (y + 51) * TILE_SIZE, TILE_SIZE),
 				data3.uv
 			);
 		}
@@ -67,6 +77,9 @@ public class Map
 			mesh = MeshFactory.CreateQuads(quads),
 			material = new MaterialObject(Vault.LoadResource<Shader>("shaders/wall.rshad"))
 					.SetTexture(wallTexture)
+					.SetProperty("u_tileSize", TILE_SIZE)
+					.SetProperty("u_depthRange", size.x * TILE_SIZE),
+			drawOrder = int.MaxValue
 		});
 	}
 }

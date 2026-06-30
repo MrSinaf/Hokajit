@@ -1,7 +1,8 @@
-﻿using Hokajit.Data;
-using Ratelite;
+﻿using Ratelite;
 
 namespace Hokajit;
+
+public record class TileData(uint id, Region uv);
 
 public struct Tile
 {

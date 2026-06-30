@@ -22,9 +22,9 @@ public class RolePlay : IGameMode
 		else
 			throw new Exception("Stage.current is not a Game instance (╬▔皿▔)╯");
 		
-		map = new Map(world);
+		map = new Map(world, new Vector2Int(100));
 		world.camera.zoom = 3;
-		world.camera.position = new Vector2(50 * Map.TILE_SIZE);
+		world.camera.position = new Vector2(0, 50 * Map.TILE_SIZE);
 		
 		game.components.AddComponent<CameraMovements>();
 	}
