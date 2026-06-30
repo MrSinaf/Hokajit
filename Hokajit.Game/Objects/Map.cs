@@ -22,7 +22,17 @@ public class Map
 			field = value;
 			wall.material.SetProperty("u_wallsVisibility", value);
 		}
-	} = 1F;
+	} = 0.35F;
+	
+	public float cursorPosition
+	{
+		get;
+		set
+		{
+			field = value;
+			wall.material.SetProperty("u_cursorPosition", value);
+		}
+	} = 0;
 	
 	public Map(World world, Vector2Int size)
 	{
@@ -77,6 +87,7 @@ public class Map
 			mesh = MeshFactory.CreateQuads(quads),
 			material = new MaterialObject(Vault.LoadResource<Shader>("shaders/wall.rshad"))
 					.SetTexture(wallTexture)
+					.SetProperty("u_wallsVisibility", wallsVisibility)
 					.SetProperty("u_tileSize", TILE_SIZE)
 					.SetProperty("u_depthRange", size.x * TILE_SIZE),
 			drawOrder = int.MaxValue

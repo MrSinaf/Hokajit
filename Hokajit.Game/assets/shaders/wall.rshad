@@ -8,6 +8,7 @@ uniform float u_alpha = 1.0;
 uniform float u_wallsVisibility;
 uniform int u_depthRange;
 uniform int u_tileSize;
+uniform float u_cursorPosition;
 
 void mainVertex(in vec2 a_position, in vec2 a_texCoord, out vec2 v_fragCoord, out vec2 v_worldPosition) {
     vec3 worldPosition = u_model * vec3(a_position, 1.0);
@@ -20,16 +21,20 @@ void mainFragment(in vec2 v_fragCoord, in vec2 v_worldPosition, out vec4 o_fragC
     o_fragColor = texture(u_texture, mix(u_uv.xy, u_uv.zw, v_fragCoord));
     o_fragColor.rgb *= u_tint.rgb;
     o_fragColor.a *= (u_alpha * u_tint.a);
-
+    
     float tileY = mod(v_worldPosition.y, u_tileSize);
-    if (tileY >= u_tileSize * 0.25) {
-        o_fragColor.a = o_fragColor.a * u_wallsVisibility;
+    float wallBaseY = floor(v_worldPosition.y / u_tileSize) * u_tileSize;
+    float cursorTileBaseY = floor(u_cursorPosition / u_tileSize) * u_tileSize;
+    
+    if (wallBaseY == cursorTileBaseY){
+        if (tileY >= u_tileSize * 0.25) {
+            o_fragColor.a *= u_wallsVisibility;
+        } 
     }
 
     if (o_fragColor.a <= 0.01) {
         discard;
     }
     
-    float wallBaseY = floor(v_worldPosition.y / u_tileSize) * u_tileSize;
     gl_FragDepth = clamp(wallBaseY / u_depthRange, 0.0, 1.0);
 }

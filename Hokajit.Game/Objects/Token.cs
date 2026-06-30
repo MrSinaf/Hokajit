@@ -23,6 +23,6 @@ public class Token : RObject
 	
 	protected override void Update()
 	{
-		drawDepth = position.y / (100 * Map.TILE_SIZE);
+		drawDepth = position.y / (100 * Map.TILE_SIZE) + position.x * 0.0000001F;
 	}
 }
